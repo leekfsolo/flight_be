@@ -10,13 +10,9 @@ auth = APIRouter()
 async def login_for_access_token(user: UserLogin = Body(default=None)):
     userDB = authenticate_user(username=user.email, password=user.password)
     if not userDB:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Incorrect username or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+        return {'success': False, 'message': 'Invalid email or password'}
     access_token = encodeJWT(user=userDB["email"])
-    return access_token
+    return {'success': True, 'token': access_token, 'message': 'Login successfully'}
 
 
 @auth.get("/getMyInfo",dependencies=[Depends(jwtBearer())])

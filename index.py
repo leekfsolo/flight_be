@@ -24,5 +24,5 @@ tags_metadata = [
     },
 ]
 
-app.include_router(user, tags=["users"],prefix="/users")
-app.include_router(auth, tags=["authentication"], prefix="/auth")
+app.include_router(user, tags=["users"],prefix="/api/users")
+app.include_router(auth, tags=["authentication"], prefix="/api/auth")

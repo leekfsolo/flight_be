@@ -32,11 +32,6 @@ def authenticate_user(username: str, password: str):
         return False
     return user
 
-def token_reponse(token: str):
-    return {
-        'token': token,
-    }
-
 def encodeJWT(user: str):
     payload = {
         'user': user,
@@ -44,7 +39,7 @@ def encodeJWT(user: str):
     }
     
     token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
-    return token_reponse(token)
+    return token
 
 def decodeJWT(token: str):
     try:
