@@ -21,8 +21,15 @@ def get_password_hash(password):
 
 def get_user(email: str):
     user = db.user.find_one({'email': email})
-    print(user)
     return user
+
+def get_userId_from_request(Authorization: str):
+    token = Authorization.split(' ')[1]
+    userEmail = decodeJWT(token)['user']
+    user = get_user(userEmail)
+    userId = user["_id"]
+    
+    return userId
       
 def authenticate_user(username: str, password: str):
     user = get_user(username)
