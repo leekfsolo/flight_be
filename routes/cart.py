@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Header, Depends
+from fastapi import APIRouter, Header, Depends, Body
 from schemas.user import serializeDict, serializeList
 from config.db import db
 from bson import ObjectId
@@ -8,7 +8,7 @@ import datetime
 
 cart = APIRouter()
 
-@cart.get('/', dependencies=[Depends(jwtBearer())])
+@cart.get('', dependencies=[Depends(jwtBearer())])
 async def get_all_cart_items(Authorization: str = Header(default=None)):
   try:
     userId = get_userId_from_request(Authorization)
@@ -43,12 +43,11 @@ async def get_all_cart_items(Authorization: str = Header(default=None)):
     return {'success': False}
   
 @cart.get('/{id}', dependencies=[Depends(jwtBearer())])
-async def get_cart_item(id: str, Authorization: str = Header(default=None)):
-  userId = get_userId_from_request(Authorization)
+async def get_cart_item(id: str):
   cartItem = serializeList(db.cart.aggregate([
       {
         '$match': {
-          'userId': userId
+          '_id': ObjectId(id),
         }  
       },
       {
@@ -65,16 +64,14 @@ async def get_cart_item(id: str, Authorization: str = Header(default=None)):
         }
       }
     ]))
-  myCartList = []
-  for cart in cartItem:
-    for item in cart['items']:
-      item['id'] = str(item['_id'])
-      item.pop('_id')
-      myCartList.append(item)
+  
+  currentCartItem = cartItem[0]['items'][0]
+  currentCartItem['id'] = str(currentCartItem['_id'])
+  currentCartItem.pop('_id')
         
-  return myCartList[0]
+  return currentCartItem
 
-@cart.post('/', dependencies=[Depends(jwtBearer())])
+@cart.post('', dependencies=[Depends(jwtBearer())])
 async def add_cart_item(ticketId: str, Authorization: str = Header(default=None)):
   try:
     userId = get_userId_from_request(Authorization)
@@ -84,7 +81,7 @@ async def add_cart_item(ticketId: str, Authorization: str = Header(default=None)
       '_id': id,
       'userId': userId,
       'ticketId': ObjectId(ticketId),
-      'created_at': datetime.datetime.now()
+      'created_at': datetime.datetime.now(),
     })
     
     cartItem = await get_cart_item(str(id), Authorization)

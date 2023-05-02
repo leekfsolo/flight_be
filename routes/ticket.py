@@ -6,7 +6,7 @@ from bson import ObjectId
 
 ticket = APIRouter()
 
-@ticket.get('/')
+@ticket.get('')
 async def get_all_tickets():
   tickets = serializeList(db.tickets.find())
   return tickets[0:10]
@@ -15,7 +15,7 @@ async def get_all_tickets():
 async def get_ticket_detail(id):
   return serializeDict(db.tickets.find_one({'_id': ObjectId(id)}))
 
-@ticket.post('/')
+@ticket.post('')
 async def add_ticket(ticket: Ticket):
   db.tickets.insert_one(dict(ticket))
   return {'success': True, 'data': ticket}

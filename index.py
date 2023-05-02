@@ -4,6 +4,7 @@ from routes.user import user
 from routes.auth import auth
 from routes.ticket import ticket
 from routes.cart import cart
+from routes.booking import booking
 
 app = FastAPI()
 
@@ -30,3 +31,4 @@ app.include_router(user, tags=["users"],prefix="/api/users")
 app.include_router(auth, tags=["authentication"], prefix="/api/auth")
 app.include_router(ticket, tags=["tickets"], prefix="/api/tickets")
 app.include_router(cart, tags=["cart"], prefix="/api/cart")
+app.include_router(booking, tags=["booking"], prefix="/api/booking")

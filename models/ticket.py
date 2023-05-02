@@ -15,4 +15,5 @@ class Ticket(CustomBaseModel):
   meals: int = Field(default=0)
   price: float = Field(default=0)
   airline: int = Field(default=0)
+  flightId: str = Field(default=None)
   

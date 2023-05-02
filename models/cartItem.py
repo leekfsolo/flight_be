@@ -4,6 +4,5 @@ from bson import ObjectId
 import datetime
 
 class CartItem(CustomBaseModel):
-	userId: ObjectId = Field(default=None)
-	ticketId: ObjectId = Field(default=None)
-	created_at: datetime = Field(default=datetime.datetime.now())
+	created_at: datetime.datetime = Field(default=datetime.datetime.now())
+	
