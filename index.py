@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.user import user
 from routes.auth import auth
+from routes.ticket import ticket
 
 app = FastAPI()
 
@@ -26,3 +27,4 @@ tags_metadata = [
 
 app.include_router(user, tags=["users"],prefix="/api/users")
 app.include_router(auth, tags=["authentication"], prefix="/api/auth")
+app.include_router(ticket, tags=["tickets"], prefix="/api/tickets")
