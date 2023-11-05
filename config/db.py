@@ -1,8 +1,9 @@
+import certifi
 from pymongo import MongoClient
 
 uri = "mongodb+srv://leekfsolo:Kennguyen0309@flight-booking.ockhllv.mongodb.net/?retryWrites=true&w=majority"
 
-conn = MongoClient(uri)
+conn = MongoClient(uri, tlsCAFile=certifi.where())
 
 try:
     conn.admin.command('ping')

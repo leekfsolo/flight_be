@@ -43,7 +43,7 @@ async def get_all_cart_items(Authorization: str = Header(default=None)):
     return {'success': False}
   
 @cart.get('/{id}', dependencies=[Depends(jwtBearer())])
-async def get_cart_item(id: str):
+async def get_cart_item(id: str, Authorization: str = Header(default=None)):
   cartItem = serializeList(db.cart.aggregate([
       {
         '$match': {
@@ -65,6 +65,7 @@ async def get_cart_item(id: str):
       }
     ]))
   
+  
   currentCartItem = cartItem[0]['items'][0]
   currentCartItem['id'] = str(currentCartItem['_id'])
   currentCartItem.pop('_id')
@@ -76,13 +77,15 @@ async def add_cart_item(ticketId: str, Authorization: str = Header(default=None)
   try:
     userId = get_userId_from_request(Authorization)
     id = ObjectId()
-  
-    db.cart.insert_one({
+    
+    ticket = {
       '_id': id,
       'userId': userId,
       'ticketId': ObjectId(ticketId),
       'created_at': datetime.datetime.now(),
-    })
+    }
+    
+    db.cart.insert_one(dict(ticket))
     
     cartItem = await get_cart_item(str(id), Authorization)
     
