@@ -11,8 +11,8 @@ from decouple import config
 import httpx
 from models.CustomBaseModels import CustomBaseModel
 
-PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID')
-PAYPAL_CLIENT_SECRET = config('PAYPAL_CLIENT_SECRET')
+# PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID')
+# PAYPAL_CLIENT_SECRET = config('PAYPAL_CLIENT_SECRET')
 PAYPAL_BASE_URL = "https://api-m.sandbox.paypal.com"
 
 
@@ -105,7 +105,7 @@ async def get_cart_item(id: str):
         },
         {
             '$lookup': {
-                'from': 'tickets',
+                'from': 'voucher',
                 'localField': 'ticketId',
                 'foreignField': '_id',
                 'as': 'items'
@@ -132,9 +132,9 @@ async def add_cart_item(ticketId: str, Authorization: str = Header(default=None)
             'ticketId': ObjectId(ticketId),
             'created_at': datetime.datetime.now(),
         }
+        print(ticket)
 
         db.cart.insert_one(dict(ticket))
-
         cartItem = await get_cart_item(str(id))
 
         return {'success': True, 'message': 'add ticket successfully', 'data': cartItem}

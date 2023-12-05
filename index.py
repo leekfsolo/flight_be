@@ -5,6 +5,7 @@ from routes.auth import auth
 from routes.ticket import ticket
 from routes.cart import cart
 from routes.booking import booking
+from routes.voucher import voucher
 
 app = FastAPI()
 
@@ -32,3 +33,4 @@ app.include_router(auth, tags=["authentication"], prefix="/api/auth")
 app.include_router(ticket, tags=["tickets"], prefix="/api/tickets")
 app.include_router(cart, tags=["cart"], prefix="/api/cart")
 app.include_router(booking, tags=["booking"], prefix="/api/booking")
+app.include_router(voucher, tags=["voucher"], prefix="/api/voucher")

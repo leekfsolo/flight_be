@@ -12,8 +12,8 @@ import httpx
 import json
 from .cart import handle_response
 
-GHN_TOKEN = config('GHN_TOKEN')
-GHN_SHOP_ID = config('GHN_SHOP_ID')
+# GHN_TOKEN = config('GHN_TOKEN')
+# GHN_SHOP_ID = config('GHN_SHOP_ID')
 GHN_BASE_URL = "https://dev-online-gateway.ghn.vn/shiip/public-api/v2"
 booking = APIRouter()
 
